@@ -4,8 +4,7 @@ image:
 
 tasks:
   - name: shell
-    command: echo "hello red-pod :)"
-
+    command: echo "Welcome to okd-pod :)"
 
 ports:
   - port: 3300
