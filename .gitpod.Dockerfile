@@ -25,18 +25,6 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     && openshift-install version \
     " 
 
-ARG RELEASE_PKG="openshift-install-linux-4.13.0-0.okd-2023-05-22-052007.tar.gz"
-ARG INSTALL_URL="${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
-ARG TEMP_DIR="/tmp/openshift-install"
-ARG TEMP_FILE="openshift-install-linux.tar.gz"
-RUN bash -c "mkdir -p '${TEMP_DIR}' \
-    && wget -nv -O '${TEMP_DIR}/${TEMP_FILE}' '${INSTALL_URL}' \
-    && tar zxvf '${TEMP_DIR}/${TEMP_FILE}' -C '${TEMP_DIR}' \
-    && sudo mv  '${TEMP_DIR}/openshift-install' '/usr/local/bin/' \    
-    && rm '${TEMP_DIR}/${TEMP_FILE}' \
-    && openshift-install version \
-    " 
-
 # oc / kubectl
 ARG RELEASE_PKG="openshift-client-linux-4.13.0-0.okd-2023-05-22-052007.tar.gz"
 ARG INSTALL_URL="${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
@@ -66,6 +54,15 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     && rm '${TEMP_DIR}/${TEMP_FILE}' \
     && ccoctl help \
     "
+
+# odo
+ARG ODO_URL="https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/odo/v3.10.0/odo-linux-amd64"
+RUN bash -c "curl -L ${ODO_URL} -o odo \
+    curl -L ${ODO_URL}.sha256 -o odo.sha256 \
+    echo "$(<odo.sha256)  odo" | shasum -a 256 --check \
+    sudo install -o root -g root -m 0755 odo /usr/local/bin/odo \
+    "
+
 
 # Java
 ARG JAVA_SDK="17.0.7-amzn"
