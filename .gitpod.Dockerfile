@@ -58,9 +58,9 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
 # odo
 ARG ODO_URL="https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/odo/v3.10.0/odo-linux-amd64"
 RUN bash -c "curl -L ${ODO_URL} -o odo \
-    curl -L ${ODO_URL}.sha256 -o odo.sha256 \
-    echo "$(<odo.sha256)  odo" | shasum -a 256 --check \
-    sudo install -o root -g root -m 0755 odo /usr/local/bin/odo \
+    && curl -L ${ODO_URL}.sha256 -o odo.sha256 \
+    && echo "$(<odo.sha256)  odo" | shasum -a 256 --check \
+    && sudo install -o root -g root -m 0755 odo /usr/local/bin/odo \
     "
 
 
