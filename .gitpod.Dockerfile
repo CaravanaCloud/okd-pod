@@ -38,8 +38,7 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     && rm '${TEMP_DIR}/${TEMP_FILE}' \
     && oc version --client \
     && kubectl version --client \
-    " 
-
+    "
 
 # ccoctl
 # https://github.com/okd-project/okd/releases/download/4.13.0-0.okd-2023-05-22-052007/ccoctl-linux-4.13.0-0.okd-2023-05-22-052007.tar.gz
@@ -63,6 +62,8 @@ RUN bash -c "curl -L ${ODO_URL} -o odo \
     && sudo install -o root -g root -m 0755 odo /usr/local/bin/odo \
     "
 
+# Helm, Terraform, Terragrunt
+RUN bash -c "brew install helm terraform terragrunt"
 
 # Java
 ARG JAVA_SDK="17.0.7-amzn"
@@ -76,12 +77,15 @@ RUN bash -c "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 
     && sudo ./aws/install \
     && aws --version \
     "
+
 RUN bash -c "npm install -g aws-cdk"
+
 ARG SAM_URL="https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip"
 RUN bash -c "curl -Ls '${SAM_URL}' -o '/tmp/aws-sam-cli-linux-x86_64.zip' \
     && unzip '/tmp/aws-sam-cli-linux-x86_64.zip' -d '/tmp/sam-installation' \
     && sudo '/tmp/sam-installation/install' \
     && sam --version"
+
 RUN bash -c "pip install cloudformation-cli cloudformation-cli-java-plugin cloudformation-cli-go-plugin cloudformation-cli-python-plugin cloudformation-cli-typescript-plugin"
 
 # Azure
