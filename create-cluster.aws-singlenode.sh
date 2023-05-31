@@ -17,7 +17,7 @@ export SSH_KEY=$(cat $HOME/.ssh/id_rsa.pub)
 check_variables "AWS_REGION" "OCP_BASE_DOMAIN" "PULL_SECRET" "SSH_KEY"
 
 aws sts get-caller-identity
-envsubst < "install-config.aws-default.env.yaml" > "install-config.yaml"
+envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 cp "install-config.yaml" "install-config.bak.yaml"
 
 echo "WARNING: This will run 6 x m6i.xlarge	instances on your AWS account."
