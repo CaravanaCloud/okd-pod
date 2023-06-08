@@ -43,6 +43,7 @@ vscode:
     - vscjava.vscode-java-test
     - vscjava.vscode-maven
     - redhat.java
+    - redhat.vscode-openshift-connector
     - ms-azuretools.vscode-docker
     - ms-python.python
     - ms-toolsai.jupyter
