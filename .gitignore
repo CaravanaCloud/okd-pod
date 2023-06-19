@@ -32,3 +32,5 @@ tls
 install-config.yaml
 metadata.json
 terraform.*
+
+kustomize

@@ -94,9 +94,13 @@ RUN bash -c "curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash"
 # Aliyun
 RUN bash -c "brew install aliyun-cli"
 
-# Tekton
+# ArgoCD and Tekton
+RUN bash -c "brew install argocd"
 RUN bash -c "sudo apt install -y tektoncd-cli \
     && tkn version"
+
+# Kustomize
+RUN bash -c "curl -s 'https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh'  | bash"
 
 # Done :)
 RUN bash -c "echo 'done.'"
