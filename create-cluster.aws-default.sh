@@ -25,7 +25,9 @@ sleep 5
 
 openshift-install create cluster
 openshift-install wait-for install-complete
-export KUBECONFIG=/workspace/okd-pod/auth/kubeconfig
+
+mkdir -p "$HOME/.kube"
+ln -sf "/workspace/okd-pod/auth/kubeconfig $HOME/.kube/config"
 
 oc cluster-info
 
