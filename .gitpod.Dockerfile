@@ -38,7 +38,9 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     && rm '${TEMP_DIR}/${TEMP_FILE}' \
     && oc version --client \
     && kubectl version --client \
+    oc completion bash > /etc/bash_completion.d/oc_bash_completion \
     "
+
 
 # ccoctl
 # https://github.com/okd-project/okd/releases/download/4.13.0-0.okd-2023-05-22-052007/ccoctl-linux-4.13.0-0.okd-2023-05-22-052007.tar.gz
@@ -61,6 +63,9 @@ RUN bash -c "curl -L ${ODO_URL} -o odo \
     && echo "$(<odo.sha256)  odo" | shasum -a 256 --check \
     && sudo install -o root -g root -m 0755 odo /usr/local/bin/odo \
     "
+
+# Operator SDK
+RUN bash -c "brew install operator-sdk"
 
 # Helm, Terraform, Terragrunt
 RUN bash -c "brew install helm terraform terragrunt"
