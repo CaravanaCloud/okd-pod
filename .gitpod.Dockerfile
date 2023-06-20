@@ -5,7 +5,7 @@ FROM gitpod/workspace-full
 RUN bash -c "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3EFE0E0A2F2F60AA"
 RUN bash -c "echo 'deb http://ppa.launchpad.net/tektoncd/cli/ubuntu jammy main'|sudo tee /etc/apt/sources.list.d/tektoncd-ubuntu-cli.list"
 RUN bash -c "sudo apt-get update"
-RUN bash -c "sudo install-packages direnv gettext mysql-client gnupg"
+RUN bash -c "sudo install-packages direnv gettext mysql-client gnupg golang"
 RUN bash -c "sudo pip install --upgrade pip"
 
 # OKD
@@ -38,8 +38,8 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     && rm '${TEMP_DIR}/${TEMP_FILE}' \
     && oc version --client \
     && kubectl version --client \
-    oc completion bash > /etc/bash_completion.d/oc_bash_completion \
     "
+# TODO    sudo bash -c 'oc completion bash > /etc/bash_completion.d/oc_bash_completion' \
 
 
 # ccoctl
