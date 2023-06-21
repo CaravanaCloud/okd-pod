@@ -3,8 +3,11 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: shell
-    command: echo "Welcome to okd-pod :)"
+  - name: okd shell
+    command: |
+      mkdir -p $HOME/.kube
+      ln -sf "/workspace/okd-pod/auth/kubeconfig" "$HOME/.kube/config"
+      echo "Welcome to okd-pod :)"
 
 ports:
   - port: 3300
