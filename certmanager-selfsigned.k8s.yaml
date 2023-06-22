@@ -1,0 +1,9 @@
+# oc create ns cert-manager-test
+# oc apply -f certmanager-selfsigned.k8s.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: test-selfsigned
+  namespace: cert-manager-test
+spec:
+  selfSigned: {}

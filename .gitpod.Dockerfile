@@ -77,7 +77,6 @@ RUN bash -c "curl -L ${ODO_URL} -o odo \
 #      && chmod +x /home/gitpod/bashrc.d/krew.sh
 #      "
 
-
 # Operator SDK
 RUN bash -c "brew install operator-sdk"
 

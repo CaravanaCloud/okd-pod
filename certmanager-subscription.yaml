@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: certmanager-subscription
+  namespace: openshift-operators 
+spec:
+  channel: certmanager-channel
+  name: cert-manager
+  source: redhat-operators 
+  sourceNamespace: openshift-marketplace 
