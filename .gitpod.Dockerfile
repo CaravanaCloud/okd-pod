@@ -4,9 +4,14 @@ FROM gitpod/workspace-full
 # System
 RUN bash -c "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3EFE0E0A2F2F60AA"
 RUN bash -c "echo 'deb http://ppa.launchpad.net/tektoncd/cli/ubuntu jammy main'|sudo tee /etc/apt/sources.list.d/tektoncd-ubuntu-cli.list"
-RUN bash -c "sudo apt-get update"
 RUN bash -c "sudo install-packages direnv gettext mysql-client gnupg golang"
+RUN bash -c "sudo apt-get update"
 RUN bash -c "sudo pip install --upgrade pip"
+
+# URL
+RUN bash -c "git clone https://github.com/CaravanaCloud/up.git /workspace/up"
+RUN bash -c "cd /workspace/up && ./build.sh"
+RUN bash -c "up"
 
 # OKD
 # Installer from https://github.com/okd-project/okd/releases/download/4.13.0-0.okd-2023-05-22-052007/openshift-install-linux-4.13.0-0.okd-2023-05-22-052007.tar.gz
