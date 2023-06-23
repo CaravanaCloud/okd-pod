@@ -10,7 +10,7 @@ RUN bash -c "sudo pip install --upgrade pip"
 
 # URL
 RUN bash -c "git clone https://github.com/CaravanaCloud/up.git /workspace/up"
-RUN bash -c "cd /workspace/up && ./build.sh"
+RUN bash -c "cd /workspace/up && ./install_all.sh"
 RUN bash -c "up"
 
 # OKD

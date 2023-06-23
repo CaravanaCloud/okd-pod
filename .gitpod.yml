@@ -4,10 +4,12 @@ image:
 
 tasks:
   - name: okd shell
-    command: |
+    init: |
       mkdir -p $HOME/.kube
       ln -sf "/workspace/okd-pod/auth/kubeconfig" "$HOME/.kube/config"
-      echo "Welcome to okd-pod :)"
+      echo "Init okd-pod at $(date)"
+    command: |
+      echo "Welcome to okd-pod, time is $(date)"
 
 ports:
   - port: 3300
