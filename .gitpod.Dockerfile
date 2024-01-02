@@ -8,11 +8,6 @@ RUN bash -c "sudo install-packages direnv gettext mysql-client gnupg golang"
 RUN bash -c "sudo apt-get update"
 RUN bash -c "sudo pip install --upgrade pip"
 
-# URL
-RUN bash -c "git clone https://github.com/CaravanaCloud/up.git /workspace/up"
-RUN bash -c "cd /workspace/up && ./install_all.sh"
-RUN bash -c "up"
-
 # OKD
 # Installer from https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz
 ARG REPO_URL="https://github.com/okd-project/okd/releases/download"
