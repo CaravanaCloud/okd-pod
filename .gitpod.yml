@@ -6,7 +6,6 @@ tasks:
   - name: okd shell
     init: |
       mkdir -p $HOME/.kube
-      ln -sf "/workspace/okd-pod/auth/kubeconfig" "$HOME/.kube/config"
       echo "Init okd-pod at $(date)"
     command: |
       echo "Welcome to okd-pod, time is $(date)"
