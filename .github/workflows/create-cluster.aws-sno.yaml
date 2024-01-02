@@ -31,7 +31,7 @@ jobs:
         REPO_URL: "https://github.com/okd-project/okd/releases/download"
         RELEASE_TAG: "4.14.0-0.okd-2023-12-01-225814"
         RELEASE_PKG: "openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
-        INSTALL_URL: "${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
+        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
         TEMP_DIR: "/tmp/openshift-install"
         TEMP_FILE: "openshift-install-linux.tar.gz"        
       run: |
