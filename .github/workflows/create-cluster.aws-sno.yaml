@@ -33,7 +33,8 @@ jobs:
         mkdir -p "/tmp/openshift-install" \
         && wget -nv -O "/tmp/openshift-install/openshift-install-linux.tar.gz" "${INSTALL_URL}" \
         && tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install" \
-        && sudo mv "/tmp/openshift-install/openshift-install" "/usr/local/bin/" \    
         && rm "/tmp/openshift-install/openshift-install-linux.tar.gz" \
-        && openshift-install version
+    
+    - name: Check openshift installer
+      run: /tmp/openshift-install/openshift-install version
 
