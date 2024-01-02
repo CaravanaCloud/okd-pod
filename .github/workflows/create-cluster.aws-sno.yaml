@@ -26,7 +26,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install openshift installer 
+    - name: Install OKD installer 
       env:
         INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
       run: |
@@ -35,6 +35,18 @@ jobs:
         && tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install" \
         && rm "/tmp/openshift-install/openshift-install-linux.tar.gz" \
     
-    - name: Check openshift installer
+    - name: Check OKD installer
       run: /tmp/openshift-install/openshift-install version
 
+    - name: Install OKD clients
+      env:
+        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-client-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
+      run: |
+        mkdir -p '/tmp/openshift-client' \
+            && wget -nv -O '/tmp/openshift-client/openshift-client-linux.tar.gz' '${INSTALL_URL}' \
+            && tar zxvf '/tmp/openshift-client/openshift-client-linux.tar.gz' -C '/tmp/openshift-client' \
+            && rm '/tmp/openshift-client/openshift-client-linux.tar.gz' 
+
+    - name: Check OKD clients
+      run: /tmp/openshift-client/oc version --client  
+  
