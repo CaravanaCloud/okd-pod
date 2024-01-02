@@ -1,0 +1,43 @@
+name: Create temporary single-node cluster on AWS
+
+on:
+  workflow_dispatch:
+    inputs:
+      env_id:
+        description: 'Environment ID'
+        required: true
+        default: 'okdpod'
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.REDHACKS_TEMP_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.REDHACKS_TEMP_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Check AWS auth
+      run: aws sts get-caller-identity
+        
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set ENV_ID
+      run: echo "ENV_ID=$(if [ -z "${{ github.event.inputs.env_id }}" ]; then echo 'okdpod'; else echo "${{ github.event.inputs.env_id }}"; fi)" >> $GITHUB_ENV
+
+    - name: Deploy to AWS 
+      env:
+        ENV_ID: ${{ env.ENV_ID }}
+        STACK_NAME: ${{ env.ENV_ID }}
+        DomainName: "perm.ecofeiras.com"
+        RegionalCertificateArn: "arn:aws:acm:us-east-1:570997277768:certificate/fada378f-7bf1-4d1a-8361-4390f8756d9c"
+        HostedZoneId: "Z05338353SJBK366COB82"
+      run: |
+        echo "doing the trick"
