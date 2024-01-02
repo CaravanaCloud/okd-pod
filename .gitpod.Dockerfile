@@ -83,7 +83,7 @@ RUN bash -c "brew install operator-sdk"
 RUN bash -c "brew install helm terraform terragrunt"
 
 # Java
-ARG JAVA_SDK="17.0.7-amzn"
+ARG JAVA_SDK="21.0.1-graalce"
 RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
     && sdk install java $JAVA_SDK \
     && sdk default java $JAVA_SDK \
