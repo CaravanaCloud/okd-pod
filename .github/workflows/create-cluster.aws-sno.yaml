@@ -1,4 +1,4 @@
-name: Create temporary single-node cluster on AWS
+name: Create OKD Cluster on AWS (temporary)
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ on:
       - main
 
 jobs:
-  deploy-dev:
+  create-okd-cluster:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,12 +32,19 @@ jobs:
     - name: Set ENV_ID
       run: echo "ENV_ID=$(if [ -z "${{ github.event.inputs.env_id }}" ]; then echo 'okdpod'; else echo "${{ github.event.inputs.env_id }}"; fi)" >> $GITHUB_ENV
 
-    - name: Deploy to AWS 
+    - name: Install openshift installer 
       env:
-        ENV_ID: ${{ env.ENV_ID }}
-        STACK_NAME: ${{ env.ENV_ID }}
-        DomainName: "perm.ecofeiras.com"
-        RegionalCertificateArn: "arn:aws:acm:us-east-1:570997277768:certificate/fada378f-7bf1-4d1a-8361-4390f8756d9c"
-        HostedZoneId: "Z05338353SJBK366COB82"
+        REPO_URL: "https://github.com/okd-project/okd/releases/download"
+        RELEASE_TAG: "4.14.0-0.okd-2023-12-01-225814"
+        RELEASE_PKG: "openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
+        INSTALL_URL: "${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
+        TEMP_DIR: "/tmp/openshift-install"
+        TEMP_FILE: "openshift-install-linux.tar.gz"        
       run: |
-        echo "doing the trick"
+        mkdir -p '${TEMP_DIR}' \
+        && wget -nv -O '${TEMP_DIR}/${TEMP_FILE}' '${INSTALL_URL}' \
+        && tar zxvf '${TEMP_DIR}/${TEMP_FILE}' -C '${TEMP_DIR}' \
+        && sudo mv  '${TEMP_DIR}/openshift-install' '/usr/local/bin/' \    
+        && rm '${TEMP_DIR}/${TEMP_FILE}' \
+        && openshift-install version
+
