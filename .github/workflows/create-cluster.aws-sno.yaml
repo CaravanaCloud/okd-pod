@@ -35,10 +35,10 @@ jobs:
         TEMP_DIR: "/tmp/openshift-install"
         TEMP_FILE: "openshift-install-linux.tar.gz"        
       run: |
-        mkdir -p '${TEMP_DIR}' \
-        && wget -nv -O '${TEMP_DIR}/${TEMP_FILE}' '${INSTALL_URL}' \
-        && tar zxvf '${TEMP_DIR}/${TEMP_FILE}' -C '${TEMP_DIR}' \
-        && sudo mv  '${TEMP_DIR}/openshift-install' '/usr/local/bin/' \    
-        && rm '${TEMP_DIR}/${TEMP_FILE}' \
+        mkdir -p "${TEMP_DIR}" \
+        && wget -nv -O "${TEMP_DIR}/${TEMP_FILE}" "${INSTALL_URL}" \
+        && tar zxvf "${TEMP_DIR}/${TEMP_FILE}" -C "${TEMP_DIR}" \
+        && sudo mv  "${TEMP_DIR}/openshift-install" "/usr/local/bin/" \    
+        && rm "${TEMP_DIR}/${TEMP_FILE}" \
         && openshift-install version
 
