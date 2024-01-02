@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       env_id:
-        description: 'Environment ID'
+        description: "Environment ID"
         required: true
-        default: 'okdpod'
+        default: "okdpod"
 
 jobs:
   create-okd-cluster:
@@ -34,6 +34,7 @@ jobs:
         && wget -nv -O "/tmp/openshift-install/openshift-install-linux.tar.gz" "${INSTALL_URL}" \
         && tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install" \
         && rm "/tmp/openshift-install/openshift-install-linux.tar.gz" \
+        && mv "/tmp/openshift-install/openshift-install" "."
     
     - name: Check OKD installer
       run: /tmp/openshift-install/openshift-install version
@@ -42,10 +43,11 @@ jobs:
       env:
         INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-client-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
       run: |
-        mkdir -p '/tmp/openshift-client' \
-            && wget -nv -O '/tmp/openshift-client/openshift-client-linux.tar.gz' '${INSTALL_URL}' \
-            && tar zxvf '/tmp/openshift-client/openshift-client-linux.tar.gz' -C '/tmp/openshift-client' \
-            && rm '/tmp/openshift-client/openshift-client-linux.tar.gz' 
+        mkdir -p "/tmp/openshift-client" \
+            && wget -nv -O "/tmp/openshift-client/openshift-client-linux.tar.gz" "${INSTALL_URL}" \
+            && tar zxvf "/tmp/openshift-client/openshift-client-linux.tar.gz" -C "/tmp/openshift-client" \
+            && rm "/tmp/openshift-client/openshift-client-linux.tar.gz" \
+            && mv "/tmp/openshift-client" "."
 
     - name: Check OKD clients
       run: /tmp/openshift-client/oc version --client  
