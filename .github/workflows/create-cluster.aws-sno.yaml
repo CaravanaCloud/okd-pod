@@ -28,17 +28,12 @@ jobs:
 
     - name: Install openshift installer 
       env:
-        REPO_URL: "https://github.com/okd-project/okd/releases/download"
-        RELEASE_TAG: "4.14.0-0.okd-2023-12-01-225814"
-        RELEASE_PKG: "openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
-        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
-        TEMP_DIR: "/tmp/openshift-install"
-        TEMP_FILE: "openshift-install-linux.tar.gz"        
+        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
       run: |
-        mkdir -p "${TEMP_DIR}" \
-        && wget -nv -O "${TEMP_DIR}/${TEMP_FILE}" "${INSTALL_URL}" \
-        && tar zxvf "${TEMP_DIR}/${TEMP_FILE}" -C "${TEMP_DIR}" \
-        && sudo mv  "${TEMP_DIR}/openshift-install" "/usr/local/bin/" \    
-        && rm "${TEMP_DIR}/${TEMP_FILE}" \
+        mkdir -p "/tmp/openshift-install" \
+        && wget -nv -O "/tmp/openshift-install/openshift-install-linux.tar.gz" "${INSTALL_URL}" \
+        && tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install" \
+        && sudo mv "/tmp/openshift-install/openshift-install" "/usr/local/bin/" \    
+        && rm "/tmp/openshift-install/openshift-install-linux.tar.gz" \
         && openshift-install version
 
