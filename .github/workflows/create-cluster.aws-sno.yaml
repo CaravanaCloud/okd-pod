@@ -72,5 +72,33 @@ jobs:
         name: install-config
         path: install-config.yaml.gpg
 
+    - name: Create OKD cluster
+      run: ./openshift-install create cluster --log-level debug
     
+    - name: Wait for cluster install to verify
+      run: ./openshift-install wait-for install-complete
+    
+    - name: Encrypt install log
+      run: |
+        echo "${{ secrets.DEV_ARTIFACTS_GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --symmetric --cipher-algo AES256 .openshift_install.log
+    
+    - name: Store OKD install log
+      uses: actions/upload-artifact@v4
+      with:
+        name: install-log
+        path: .openshift_install.log.gpg
+    
+    - name: Encryt kubeconfig
+      run: |
+        echo "${{ secrets.DEV_ARTIFACTS_GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --symmetric --cipher-algo AES256 auth/kubeconfig
+
+    - name: Store kubeconfig
+      uses: actions/upload-artifact@v4
+      with:
+        name: kubeconfig
+        path: auth/kubeconfig.gpg
+    
+    - name: Check file tree
+      run: find .
+
 
