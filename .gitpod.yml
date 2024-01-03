@@ -39,6 +39,10 @@ ports:
     onOpen: ignore
     visibility: public
 
+  - port: 24000
+    onOpen: ignore
+    visibility: private
+
 vscode:
   extensions:
     - vscjava.vscode-java-pack

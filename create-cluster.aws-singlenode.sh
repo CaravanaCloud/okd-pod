@@ -1,6 +1,6 @@
 #!/bin/bash
-set -x
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+set -ex
+export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 check_variables() {
   for var in "$@"; do
@@ -16,8 +16,9 @@ export CLUSTER_NAME=${CLUSTER_NAME:-"okd$RANDOM"}
 export OCP_BASE_DOMAIN=${OCP_BASE_DOMAIN:-"devcluster.openshift.com"}
 export SSH_KEY=$(cat $HOME/.ssh/id_rsa.pub)
 export INSTANCE_TYPE=${INSTANCE_TYPE:-"m6i.2xlarge"}
-check_variables "AWS_REGION" "OCP_BASE_DOMAIN" "PULL_SECRET" "SSH_KEY"
 
+echo "Pre-flight checks..."
+check_variables "AWS_REGION" "OCP_BASE_DOMAIN" "PULL_SECRET" "SSH_KEY"
 aws sts get-caller-identity
 envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 cp "install-config.yaml" "install-config.bak.yaml"
@@ -32,7 +33,6 @@ openshift-install wait-for install-complete
 mkdir -p "$HOME/.kube"
 cp "$DIR/auth/kubeconfig" "$HOME/.kube/config"
 
-
 oc cluster-info
 
 # some things to try
@@ -41,4 +41,4 @@ oc cluster-info
 # kubectl run -it --rm --restart=Never --image=busybox:1.33.1 testpod -- /bin/sh
 
 
-echo "cluster created."
+echo "cluster $CLUSTER_NAME created."

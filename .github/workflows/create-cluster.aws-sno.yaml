@@ -37,7 +37,7 @@ jobs:
         && mv "/tmp/openshift-install/openshift-install" "."
     
     - name: Check OKD installer
-      run: /tmp/openshift-install/openshift-install version
+      run: ./openshift-install/openshift-install version
 
     - name: Install OKD clients
       env:
@@ -50,5 +50,5 @@ jobs:
             && mv "/tmp/openshift-client" "."
 
     - name: Check OKD clients
-      run: /tmp/openshift-client/oc version --client  
+      run: ./oc version --client  
   
