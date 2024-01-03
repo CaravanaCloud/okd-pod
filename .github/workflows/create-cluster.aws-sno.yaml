@@ -50,7 +50,7 @@ jobs:
 
     - name: Install CCOCTL  
       env:
-        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/ccoctl-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
+        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/ccoctl-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
       run: |
         mkdir -p '/tmp/ccoctl'
         wget -nv -O '/tmp/ccoctl/ccoctl-linux.tar.gz' '${INSTALL_URL}'
