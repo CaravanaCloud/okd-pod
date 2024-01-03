@@ -15,7 +15,7 @@ jobs:
     env:
       ENV_ID: ${{ github.event.inputs.env_id }}
       CLUSTER_NAME: ${{ github.event.inputs.env_id }}okdc
-      OCP_BASE_DOMAIN: "redhacks-temp.strigus.cloud"
+      OCP_BASE_DOMAIN: "temp.strigus.cloud"
       INSTANCE_TYPE: "t3a.2xlarge"
       PULL_SECRET: ${{ secrets.TEMP_PULL_SECRET }}
       SSH_KEY: ${{ secrets.TEMP_SSH_KEY }}
