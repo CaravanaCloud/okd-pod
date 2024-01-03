@@ -65,7 +65,7 @@ jobs:
     - name: Store OKD install-config
       uses: actions/upload-artifact@v4
       with:
-        name: install-config
+        name: install-config.yaml
         path: install-config.yaml
     
 
