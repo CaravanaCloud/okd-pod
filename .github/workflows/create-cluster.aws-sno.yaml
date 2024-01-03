@@ -6,7 +6,7 @@ on:
       env_id:
         description: "Environment ID"
         required: true
-        default: "okdpod"
+        default: "okdcluster"
 
 jobs:
   create-okd-cluster:
