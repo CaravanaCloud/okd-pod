@@ -12,6 +12,9 @@ jobs:
   create-okd-cluster:
     runs-on: ubuntu-latest
 
+    env:
+      ENV_ID: ${{ github.event.inputs.env_id }}
+
     steps:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
@@ -47,8 +50,22 @@ jobs:
             && wget -nv -O "/tmp/openshift-client/openshift-client-linux.tar.gz" "${INSTALL_URL}" \
             && tar zxvf "/tmp/openshift-client/openshift-client-linux.tar.gz" -C "/tmp/openshift-client" \
             && rm "/tmp/openshift-client/openshift-client-linux.tar.gz" \
-            && mv "/tmp/openshift-client" "."
+            && mv "/tmp/openshift-client/oc" "." \
+            && mv "/tmp/openshift-client/kubectl" "."
 
     - name: Check OKD clients
       run: ./oc version --client  
   
+    - name: Check OKD installer
+      run: ./openshift-install version
+
+    - name: Generate OKD install-config
+      run: envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
+
+    - name: Store OKD install-config
+      uses: actions/upload-artifact@v2
+      with:
+        name: install-config
+        path: install-config.yaml
+    
+
