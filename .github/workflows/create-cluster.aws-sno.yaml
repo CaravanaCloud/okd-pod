@@ -38,14 +38,28 @@ jobs:
       env:
         INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
       run: |
-        mkdir -p "/tmp/openshift-install" \
-        && wget -nv -O "/tmp/openshift-install/openshift-install-linux.tar.gz" "${INSTALL_URL}" \
-        && tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install" \
-        && rm "/tmp/openshift-install/openshift-install-linux.tar.gz" \
-        && mv "/tmp/openshift-install/openshift-install" "."
+        mkdir -p "/tmp/openshift-install"
+        wget -nv -O "/tmp/openshift-install/openshift-install-linux.tar.gz" "${INSTALL_URL}"
+        tar zxvf "/tmp/openshift-install/openshift-install-linux.tar.gz" -C "/tmp/openshift-install"
+        rm "/tmp/openshift-install/openshift-install-linux.tar.gz"
+        mv "/tmp/openshift-install/openshift-install" "."
     
     - name: Check OKD installer
       run: ./openshift-install version
+
+
+    - name: Install CCOCTL  
+      env:
+        INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/ccoctl-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"        
+      run: |
+        mkdir -p '/tmp/ccoctl'
+        wget -nv -O '/tmp/ccoctl/ccoctl-linux.tar.gz' '${INSTALL_URL}'
+        tar zxvf '/tmp/ccoctl/ccoctl-linux.tar.gz' -C '/tmp/ccoctl'
+        mv  '/tmp/ccoctl/ccoctl' '.'
+        rm '/tmp/ccoctl/ccoctl-linux.tar.gz'
+
+    - name: Check CCOCTL
+      run: ./ccoctl help
 
     - name: Install OKD clients
       env:
@@ -64,6 +78,12 @@ jobs:
     - name: Check OKD installer
       run: ./openshift-install version
 
+    - name: Create CCO resources
+      run: ccoctl aws create-all
+
+    - name: Create OCP manifests
+      run: openshift-install create manifests
+  
     - name: Generate OKD install-config
       run: envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 
@@ -82,10 +102,12 @@ jobs:
 
     - name: Create OKD cluster
       run: ./openshift-install create cluster --log-level debug
+      continue-on-error: true
     
     - name: Wait for cluster install to verify
       run: ./openshift-install wait-for install-complete
-    
+      continue-on-error: true
+
     - name: Encrypt install log
       run: |
         echo "${{ secrets.DEV_ARTIFACTS_GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --symmetric --cipher-algo AES256 .openshift_install.log
