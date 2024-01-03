@@ -67,6 +67,9 @@ jobs:
     - name: Generate OKD install-config
       run: envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 
+    - name: Check OKD install-config [DEBUG/REMOVE]
+      run: cat install-config.yaml
+
     - name: Encrypt install-config
       run: |
         echo "${{ secrets.DEV_ARTIFACTS_GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --symmetric --cipher-algo AES256 install-config.yaml
