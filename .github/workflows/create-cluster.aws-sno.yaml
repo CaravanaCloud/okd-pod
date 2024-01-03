@@ -1,4 +1,4 @@
-name: Create OKD Cluster on AWS (temporary)
+name: Create OKD Cluster on AWS (single node / temporary)
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       env_id:
         description: "Environment ID"
         required: true
-        default: "okdcluster"
+        default: "qa"
 
 jobs:
   create-okd-cluster:
@@ -14,6 +14,11 @@ jobs:
 
     env:
       ENV_ID: ${{ github.event.inputs.env_id }}
+      CLUSTER_NAME: ${{ github.event.inputs.env_id }}okdc
+      OCP_BASE_DOMAIN: "redhacks-temp.strigus.cloud"
+      INSTANCE_TYPE: "t3a.2xlarge"
+      PULL_SECRET: ${{ secrets.TEMP_PULL_SECRET }}
+      SSH_KEY: ${{ secrets.TEMP_SSH_KEY }}
 
     steps:
     - name: Configure AWS credentials
