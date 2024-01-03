@@ -46,12 +46,12 @@ jobs:
       env:
         INSTALL_URL: "https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-client-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
       run: |
-        mkdir -p "/tmp/openshift-client" \
-            && wget -nv -O "/tmp/openshift-client/openshift-client-linux.tar.gz" "${INSTALL_URL}" \
-            && tar zxvf "/tmp/openshift-client/openshift-client-linux.tar.gz" -C "/tmp/openshift-client" \
-            && rm "/tmp/openshift-client/openshift-client-linux.tar.gz" \
-            && mv "/tmp/openshift-client/oc" "." \
-            && mv "/tmp/openshift-client/kubectl" "."
+        mkdir -p "/tmp/openshift-client" 
+        wget -nv -O "/tmp/openshift-client/openshift-client-linux.tar.gz" "${INSTALL_URL}" 
+        tar zxvf "/tmp/openshift-client/openshift-client-linux.tar.gz" -C "/tmp/openshift-client" 
+        rm "/tmp/openshift-client/openshift-client-linux.tar.gz" 
+        mv "/tmp/openshift-client/oc" "." 
+        mv "/tmp/openshift-client/kubectl" "."
 
     - name: Check OKD clients
       run: ./oc version --client  
@@ -63,7 +63,7 @@ jobs:
       run: envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 
     - name: Store OKD install-config
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: install-config
         path: install-config.yaml
