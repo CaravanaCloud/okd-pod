@@ -21,6 +21,9 @@ jobs:
       SSH_KEY: ${{ secrets.TEMP_SSH_KEY }}
 
     steps:
+    - name: Add PWD to Path
+      run: echo "$PWD" >> $GITHUB_PATH
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -45,8 +48,7 @@ jobs:
         mv "/tmp/openshift-install/openshift-install" "."
     
     - name: Check OKD installer
-      run: ./openshift-install version
-
+      run: openshift-install version
 
     - name: Install CCOCTL  
       env:
@@ -59,7 +61,7 @@ jobs:
         rm "/tmp/ccoctl/ccoctl-linux.tar.gz"
 
     - name: Check CCOCTL
-      run: ./ccoctl help
+      run: ccoctl help
 
     - name: Install OKD clients
       env:
@@ -73,10 +75,10 @@ jobs:
         mv "/tmp/openshift-client/kubectl" "."
 
     - name: Check OKD clients
-      run: ./oc version --client  
+      run: oc version --client  
   
     - name: Check OKD installer
-      run: ./openshift-install version
+      run: openshift-install version
 
     - name: Create CCO resources
       run: ccoctl aws create-all
@@ -101,11 +103,11 @@ jobs:
         path: install-config.yaml.gpg
 
     - name: Create OKD cluster
-      run: ./openshift-install create cluster --log-level debug
+      run: openshift-install create cluster --log-level debug
       continue-on-error: true
     
     - name: Wait for cluster install to verify
-      run: ./openshift-install wait-for install-complete
+      run: openshift-install wait-for install-complete
       continue-on-error: true
 
     - name: Encrypt install log
