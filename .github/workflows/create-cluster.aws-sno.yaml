@@ -83,17 +83,9 @@ jobs:
     - name: Check OKD installer
       run: openshift-install version
 
-    - name: Create CCO resources
-      run: |
-        mkdir -p "credentials-requests"
-        ccoctl aws create-all \
-          --credentials-requests-dir="credentials-requests" \
-          --name="${ENV_ID}cco" \
-          --region="$AWS_REGION"
+    - name: Check file tree [DEBUG]
+      run: find .
 
-    - name: Create OCP manifests
-      run: openshift-install create manifests
-  
     - name: Generate OKD install-config
       run: envsubst < "install-config.aws-singlenode.env.yaml" > "install-config.yaml"
 
@@ -110,6 +102,35 @@ jobs:
         name: install-config
         path: install-config.yaml.gpg
 
+
+    - name: Extract credential requests
+      run: |
+        mkdir -p "credentials-requests"
+        RELEASE_IMAGE=$(./openshift-install version | awk '/release image/ {print $3}')
+        echo "RELEASE_IMAGE=${RELEASE_IMAGE}" 
+        oc adm release extract \
+          --from=$RELEASE_IMAGE \
+          --credentials-requests \
+          --included \
+          --install-config=./install-config.yaml \
+          --to="credentials-requests"
+
+    - name: Create CCO resources
+      run: |
+        ccoctl aws create-all \
+          --credentials-requests-dir="credentials-requests" \
+          --name="${ENV_ID}cco" \
+          --region="$AWS_REGION" \
+          --output-dir="ccoctl-output"
+
+    - name: Create OCP manifests
+      run: |
+        mkdir -p "manifests"
+        openshift-install create manifests --dir="manifests"
+
+    - name: Merge manifests
+      run: cp ./ccoctl-output/manifests/* ./manifests/
+  
     - name: Create OKD cluster
       run: openshift-install create cluster --log-level debug
       continue-on-error: true
@@ -138,7 +159,7 @@ jobs:
         name: kubeconfig
         path: auth/kubeconfig.gpg
     
-    - name: Check file tree
+    - name: Check file tree [DEBUG]
       run: find .
 
 
