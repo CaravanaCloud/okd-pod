@@ -128,6 +128,9 @@ jobs:
         mkdir -p "manifests"
         openshift-install create manifests
 
+    - name: Check file tree [DEBUG]
+      run: find .
+
     - name: Merge manifests
       run: cp ./ccoctl-output/manifests/* ./manifests/
   
@@ -135,9 +138,11 @@ jobs:
       run: openshift-install create cluster --log-level debug
       continue-on-error: true
     
+    
     - name: Wait for cluster install to verify
       run: openshift-install wait-for install-complete
       continue-on-error: true
+      timeout-minutes: 2
 
     - name: Encrypt install log
       run: |
