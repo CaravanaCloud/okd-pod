@@ -13,13 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ENV_ID: ${{ github.event.inputs.env_id }}
-      CLUSTER_NAME: ${{ github.event.inputs.env_id }}okdc
+      # Parameters
       OCP_BASE_DOMAIN: "temp.strigus.cloud"
       INSTANCE_TYPE: "t3a.2xlarge"
+      AWS_REGION: "us-east-1"
+      ENV_ID: ${{ github.event.inputs.env_id }}
+      CLUSTER_NAME: ${{ github.event.inputs.env_id }}okdc
+      # Secrets
       PULL_SECRET: ${{ secrets.TEMP_PULL_SECRET }}
       SSH_KEY: ${{ secrets.TEMP_SSH_KEY }}
-
+      
     steps:
     - name: Add PWD to Path
       run: echo "$PWD" >> $GITHUB_PATH
@@ -29,7 +32,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.REDHACKS_TEMP_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.REDHACKS_TEMP_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Check AWS auth
       run: aws sts get-caller-identity
@@ -85,7 +88,7 @@ jobs:
         ccoctl aws create-all \
           --credentials-requests-dir="credentials-requests" \
           --name="${ENV_ID}cco" \
-          --region="$(aws configure get region)"
+          --region="$AWS_REGION"
 
     - name: Create OCP manifests
       run: openshift-install create manifests
