@@ -85,6 +85,7 @@ jobs:
 
     - name: Create CCO resources
       run: |
+        mkdir -p "credentials-requests"
         ccoctl aws create-all \
           --credentials-requests-dir="credentials-requests" \
           --name="${ENV_ID}cco" \
