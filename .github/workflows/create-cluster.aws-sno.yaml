@@ -81,7 +81,11 @@ jobs:
       run: openshift-install version
 
     - name: Create CCO resources
-      run: ccoctl aws create-all
+      run: |
+        ccoctl aws create-all \
+          --credentials-requests-dir="credentials-requests" \
+          --name="${ENV_ID}cco" \
+          --region="$(aws configure get region)"
 
     - name: Create OCP manifests
       run: openshift-install create manifests
@@ -120,7 +124,7 @@ jobs:
         name: install-log
         path: .openshift_install.log.gpg
     
-    - name: Encryt kubeconfig
+    - name: Encrypt kubeconfig
       run: |
         echo "${{ secrets.DEV_ARTIFACTS_GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --symmetric --cipher-algo AES256 auth/kubeconfig
 
