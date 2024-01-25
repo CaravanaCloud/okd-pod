@@ -9,10 +9,10 @@ RUN bash -c "sudo apt-get update"
 RUN bash -c "sudo pip install --upgrade pip"
 
 # OKD
-# Installer from https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz
+# Installer from https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2024-01-06-084517/openshift-install-linux-4.14.0-0.okd-2024-01-06-084517.tar.gz
 ARG REPO_URL="https://github.com/okd-project/okd/releases/download"
-ARG RELEASE_TAG="4.14.0-0.okd-2023-12-01-225814"
-ARG RELEASE_PKG="openshift-install-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
+ARG RELEASE_TAG="4.14.0-0.okd-2024-01-06-084517"
+ARG RELEASE_PKG="openshift-install-linux-4.14.0-0.okd-2024-01-06-084517.tar.gz"
 ARG INSTALL_URL="${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
 ARG TEMP_DIR="/tmp/openshift-install"
 ARG TEMP_FILE="openshift-install-linux.tar.gz"
@@ -25,7 +25,7 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
     " 
 
 # oc / kubectl
-ARG RELEASE_PKG="openshift-client-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
+ARG RELEASE_PKG="openshift-client-linux-4.14.0-0.okd-2024-01-06-084517.tar.gz"
 ARG INSTALL_URL="${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
 ARG TEMP_DIR="/tmp/openshift-client"
 ARG TEMP_FILE="openshift-client-linux.tar.gz"
@@ -42,8 +42,8 @@ RUN bash -c "mkdir -p '${TEMP_DIR}' \
 
 
 # ccoctl
-# https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-12-01-225814/ccoctl-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz
-ARG RELEASE_PKG="ccoctl-linux-4.14.0-0.okd-2023-12-01-225814.tar.gz"
+# https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2024-01-06-084517/ccoctl-linux-4.14.0-0.okd-2024-01-06-084517.tar.gz
+ARG RELEASE_PKG="ccoctl-linux-4.14.0-0.okd-2024-01-06-084517.tar.gz"
 ARG INSTALL_URL="${REPO_URL}/${RELEASE_TAG}/${RELEASE_PKG}"
 ARG TEMP_DIR="/tmp/ccoctl"
 ARG TEMP_FILE="ccoctl-linux.tar.gz"
